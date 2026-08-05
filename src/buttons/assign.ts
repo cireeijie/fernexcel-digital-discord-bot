@@ -1,5 +1,7 @@
 import { ButtonInteraction, ChannelType, EmbedBuilder } from "discord.js";
 
+import { config } from "../config.js";
+
 export async function assignButton(interaction: ButtonInteraction) {
   const channel = interaction.channel;
 
@@ -14,6 +16,24 @@ export async function assignButton(interaction: ButtonInteraction) {
   if (!channel.name.startsWith("ticket-")) {
     return interaction.reply({
       content: "❌ This is not a ticket channel.",
+      ephemeral: true,
+    });
+  }
+
+  // Fetch member to properly check roles
+  if (!interaction.guild) {
+    return interaction.reply({
+      content: "❌ Guild not found.",
+      ephemeral: true,
+    });
+  }
+
+  const member = await interaction.guild.members.fetch(interaction.user.id);
+
+  // Check Support role
+  if (!member.roles.cache.has(config.roles.support)) {
+    return interaction.reply({
+      content: "❌ Only support members can assign tickets.",
       ephemeral: true,
     });
   }
