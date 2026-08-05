@@ -12,6 +12,14 @@ export async function assignButton(interaction: ButtonInteraction) {
     });
   }
 
+  // Check if ticket already assigned
+  if (!channel.name.startsWith("assigned-")) {
+    return interaction.reply({
+      content: "❌ This ticket is already assigned.",
+      ephemeral: true,
+    });
+  }
+
   // Check if this looks like a ticket channel
   if (!channel.name.startsWith("ticket-")) {
     return interaction.reply({
