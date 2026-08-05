@@ -7,36 +7,18 @@ export function interactionCreateEvent(client: Client) {
   client.on("interactionCreate", async (interaction) => {
     console.log("🔥 Interaction received");
 
-    try {
-      if (interaction.isChatInputCommand()) {
-        console.log(`📝 Command: ${interaction.commandName}`);
+    if (interaction.isChatInputCommand()) {
+      console.log(`📝 Slash command: ${interaction.commandName}`);
 
-        await handleCommand(interaction);
-        return;
-      }
+      await handleCommand(interaction);
+      return;
+    }
 
-      if (interaction.isButton()) {
-        console.log(`🔘 Button: ${interaction.customId}`);
+    if (interaction.isButton()) {
+      console.log(`🔘 Button: ${interaction.customId}`);
 
-        await handleButton(interaction);
-        return;
-      }
-    } catch (error) {
-      console.error("Interaction error:", error);
-
-      if (!interaction.isRepliable()) return;
-
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp({
-          content: "❌ Something went wrong.",
-          ephemeral: true,
-        });
-      } else {
-        await interaction.reply({
-          content: "❌ Something went wrong.",
-          ephemeral: true,
-        });
-      }
+      await handleButton(interaction);
+      return;
     }
   });
 }
