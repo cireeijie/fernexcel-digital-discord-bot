@@ -12,22 +12,6 @@ export async function assignButton(interaction: ButtonInteraction) {
     });
   }
 
-  // Check if ticket already assigned
-  if (!channel.name.startsWith("assigned-")) {
-    return interaction.reply({
-      content: "❌ This ticket is already assigned.",
-      ephemeral: true,
-    });
-  }
-
-  // Check if this looks like a ticket channel
-  if (!channel.name.startsWith("ticket-")) {
-    return interaction.reply({
-      content: "❌ This is not a ticket channel.",
-      ephemeral: true,
-    });
-  }
-
   if (!interaction.guild) {
     return interaction.reply({
       content: "❌ Guild not found.",
@@ -41,7 +25,7 @@ export async function assignButton(interaction: ButtonInteraction) {
 
   const isOwner = interaction.user.id === interaction.guild.ownerId;
 
-  // Allow only Support role or Server Owner
+  // Allow only support role or server owner
   if (!isSupport && !isOwner) {
     return interaction.reply({
       content:
@@ -50,7 +34,15 @@ export async function assignButton(interaction: ButtonInteraction) {
     });
   }
 
-  // Rename the ticket
+  // Prevent assigning twice
+  if (channel.name.startsWith("assigned-")) {
+    return interaction.reply({
+      content: "⚠️ This ticket is already assigned.",
+      ephemeral: true,
+    });
+  }
+
+  // Rename ticket
   await channel.setName(`assigned-${interaction.user.username}`);
 
   const embed = new EmbedBuilder()
