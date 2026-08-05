@@ -13,13 +13,22 @@ export async function landingCommand(interaction: ChatInputCommandInteraction) {
     .setColor(0x2ecc71)
     .setTitle("🟩 Landing Page Development")
     .setDescription(
-      "High-converting landing pages designed to showcase your product or service.\n\n" +
-        "**Includes:**\n" +
-        "• Custom responsive design\n" +
-        "• Mobile optimization\n" +
-        "• Conversion-focused layout\n" +
-        "• SEO-friendly structure",
+      "High-converting landing pages designed to showcase your product, service, or campaign and turn visitors into customers.\n\n" +
+        "Includes:\n" +
+        "• Custom page design and development\n" +
+        "• Responsive mobile-friendly layout\n" +
+        "• Conversion-focused structure\n" +
+        "• Contact forms and integrations\n" +
+        "• Basic SEO optimization\n" +
+        "• Deployment support\n\n" +
+        "💡 Best for businesses that need a professional marketing page built to attract and convert visitors.",
     )
+    .addFields({
+      name: "💰 Pricing",
+      value:
+        "Starting at **$499**\n\n" +
+        "Final pricing depends on design complexity, features, integrations, and requirements.",
+    })
     .setFooter({
       text: "FERNexcel Digital",
     });

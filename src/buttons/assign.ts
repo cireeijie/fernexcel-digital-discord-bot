@@ -20,7 +20,6 @@ export async function assignButton(interaction: ButtonInteraction) {
     });
   }
 
-  // Fetch member to properly check roles
   if (!interaction.guild) {
     return interaction.reply({
       content: "❌ Guild not found.",
@@ -30,10 +29,15 @@ export async function assignButton(interaction: ButtonInteraction) {
 
   const member = await interaction.guild.members.fetch(interaction.user.id);
 
-  // Check Support role
-  if (!member.roles.cache.has(config.roles.support)) {
+  const isSupport = member.roles.cache.has(config.roles.support);
+
+  const isOwner = interaction.user.id === interaction.guild.ownerId;
+
+  // Allow only Support role or Server Owner
+  if (!isSupport && !isOwner) {
     return interaction.reply({
-      content: "❌ Only support members can assign tickets.",
+      content:
+        "❌ Only support members and the server owner can assign tickets.",
       ephemeral: true,
     });
   }

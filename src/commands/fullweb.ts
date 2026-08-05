@@ -13,13 +13,23 @@ export async function fullwebCommand(interaction: ChatInputCommandInteraction) {
     .setColor(0x9b59b6)
     .setTitle("🟪 Full Website Development")
     .setDescription(
-      "Complete website solutions for businesses needing a professional online presence.\n\n" +
-        "**Includes:**\n" +
-        "• Frontend and backend development\n" +
-        "• Database integration\n" +
+      "Complete website solutions built for businesses that need a professional and scalable online presence.\n\n" +
+        "Includes:\n" +
+        "• Custom website design and development\n" +
+        "• Multiple pages and sections\n" +
+        "• Frontend development\n" +
+        "• Backend and database integration\n" +
         "• CMS integration\n" +
-        "• Performance optimization",
+        "• Performance optimization\n" +
+        "• Deployment support\n\n" +
+        "💡 Best for businesses that need a complete website solution beyond a single landing page.",
     )
+    .addFields({
+      name: "💰 Pricing",
+      value:
+        "Starting at **$1,499**\n\n" +
+        "Custom quotes are provided based on project scope, features, and integrations.",
+    })
     .setFooter({
       text: "FERNexcel Digital",
     });
