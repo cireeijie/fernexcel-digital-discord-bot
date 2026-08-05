@@ -3,7 +3,7 @@ import "dotenv/config";
 import { Client, Collection, GatewayIntentBits, Partials } from "discord.js";
 import { config } from "./config.js";
 
-import { registerEvents } from "./events/indext.js";
+import { registerEvents } from "./events/index.js";
 
 declare module "discord.js" {
   interface Client {
