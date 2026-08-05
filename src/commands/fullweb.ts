@@ -25,7 +25,7 @@ export async function fullwebCommand(interaction: ChatInputCommandInteraction) {
     });
 
   const button = new ButtonBuilder()
-    .setCustomId("fullweb")
+    .setCustomId("website")
     .setLabel("Request Website Development")
     .setStyle(ButtonStyle.Secondary);
 
