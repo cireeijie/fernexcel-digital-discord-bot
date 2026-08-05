@@ -9,6 +9,10 @@ import {
 } from "discord.js";
 
 export async function setupCommand(interaction: ChatInputCommandInteraction) {
+  await interaction.deferReply({
+    ephemeral: true,
+  });
+
   const embed = new EmbedBuilder()
     .setColor(0x5865f2)
     .setTitle("🎫 FernExcel Support")
@@ -41,10 +45,9 @@ export async function setupCommand(interaction: ChatInputCommandInteraction) {
     !interaction.channel ||
     interaction.channel.type !== ChannelType.GuildText
   ) {
-    return interaction.reply({
-      content: "❌ This command can only be used in a server text channel.",
-      ephemeral: true,
-    });
+    return interaction.editReply(
+      "❌ This command can only be used in a server text channel.",
+    );
   }
 
   await (interaction.channel as TextChannel).send({
@@ -52,8 +55,5 @@ export async function setupCommand(interaction: ChatInputCommandInteraction) {
     components: [row],
   });
 
-  await interaction.reply({
-    content: "✅ Ticket panel created.",
-    ephemeral: true,
-  });
+  await interaction.editReply("✅ Ticket panel created.");
 }
