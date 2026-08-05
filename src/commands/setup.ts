@@ -56,16 +56,30 @@ const services = {
 };
 
 export async function setupCommand(interaction: ChatInputCommandInteraction) {
+  console.log("🚀 Setup command started");
+
+  await interaction.deferReply({
+    ephemeral: true,
+  });
+
   const serviceName = interaction.options.getString("service");
 
+  console.log("Selected service:", serviceName);
+
   if (!serviceName || !services[serviceName as keyof typeof services]) {
-    return interaction.reply({
-      content: "❌ Please select a valid service.",
-      ephemeral: true,
-    });
+    return interaction.editReply("❌ Please select a valid service.");
   }
 
   const service = services[serviceName as keyof typeof services];
+
+  if (
+    !interaction.channel ||
+    interaction.channel.type !== ChannelType.GuildText
+  ) {
+    return interaction.editReply(
+      "❌ This command can only be used in a server text channel.",
+    );
+  }
 
   const embed = new EmbedBuilder()
     .setColor(service.color)
@@ -82,22 +96,12 @@ export async function setupCommand(interaction: ChatInputCommandInteraction) {
 
   const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 
-  await interaction.reply({
-    content: "✅ Service panel created.",
-    ephemeral: true,
-  });
-
-  if (
-    !interaction.channel ||
-    interaction.channel.type !== ChannelType.GuildText
-  ) {
-    return interaction.editReply({
-      content: "❌ This command can only be used in a server text channel.",
-    });
-  }
-
   await (interaction.channel as TextChannel).send({
     embeds: [embed],
     components: [row],
   });
+
+  await interaction.editReply("✅ Service panel created.");
+
+  console.log("✅ Setup completed");
 }
