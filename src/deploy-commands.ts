@@ -9,7 +9,7 @@ const commands = [
   },
   {
     name: "consumables",
-    description: "Create consumable hours support panel",
+    description: "Create consumable hours support panels",
   },
   {
     name: "landing",
