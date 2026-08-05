@@ -52,7 +52,13 @@ export async function createTicket(
     parent: options.categoryId,
 
     permissionOverwrites: [
-      // Customer
+      // Hide ticket from everyone
+      {
+        id: guild.roles.everyone.id,
+        deny: [PermissionFlagsBits.ViewChannel],
+      },
+
+      // Ticket Creator
       {
         id: interaction.user.id,
         allow: [
@@ -72,8 +78,21 @@ export async function createTicket(
           PermissionFlagsBits.SendMessages,
           PermissionFlagsBits.ReadMessageHistory,
           PermissionFlagsBits.ManageMessages,
+          PermissionFlagsBits.ManageChannels,
           PermissionFlagsBits.AttachFiles,
           PermissionFlagsBits.EmbedLinks,
+        ],
+      },
+
+      // Server Owner
+      {
+        id: guild.ownerId,
+        allow: [
+          PermissionFlagsBits.ViewChannel,
+          PermissionFlagsBits.SendMessages,
+          PermissionFlagsBits.ReadMessageHistory,
+          PermissionFlagsBits.ManageMessages,
+          PermissionFlagsBits.ManageChannels,
         ],
       },
     ],
