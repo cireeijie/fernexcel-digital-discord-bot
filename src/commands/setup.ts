@@ -8,52 +8,96 @@ import {
   TextChannel,
 } from "discord.js";
 
+const services = {
+  consumable: {
+    title: "🟦 Consumable Development Hours",
+    description:
+      "Flexible development hours for ongoing improvements, fixes, and custom features.\n\n" +
+      "Perfect for businesses that need occasional development support without a fixed project scope.\n\n" +
+      "**Includes:**\n" +
+      "• Shopify customization\n" +
+      "• Bug fixes and improvements\n" +
+      "• Feature enhancements\n" +
+      "• Technical consultation",
+    buttonLabel: "Request Consumable Hours",
+    buttonId: "consumable",
+    color: 0x3498db,
+  },
+
+  landing: {
+    title: "🟩 Landing Page Development",
+    description:
+      "High-converting landing pages designed to showcase your product or service and turn visitors into customers.\n\n" +
+      "**Includes:**\n" +
+      "• Custom responsive design\n" +
+      "• Mobile optimization\n" +
+      "• Conversion-focused layout\n" +
+      "• Shopify / Website integration\n" +
+      "• SEO-friendly structure",
+    buttonLabel: "Request Landing Page",
+    buttonId: "landing",
+    color: 0x2ecc71,
+  },
+
+  fullweb: {
+    title: "🟪 Full Website Development",
+    description:
+      "Complete website solutions built for businesses that need a professional online presence.\n\n" +
+      "**Includes:**\n" +
+      "• Custom website development\n" +
+      "• Frontend and backend solutions\n" +
+      "• Database integration\n" +
+      "• CMS integration\n" +
+      "• Performance optimization",
+    buttonLabel: "Request Website Development",
+    buttonId: "fullweb",
+    color: 0x9b59b6,
+  },
+};
+
 export async function setupCommand(interaction: ChatInputCommandInteraction) {
-  await interaction.deferReply({
-    ephemeral: true,
-  });
+  const serviceName = interaction.options.getString("service");
+
+  if (!serviceName || !services[serviceName as keyof typeof services]) {
+    return interaction.reply({
+      content: "❌ Please select a valid service.",
+      ephemeral: true,
+    });
+  }
+
+  const service = services[serviceName as keyof typeof services];
 
   const embed = new EmbedBuilder()
-    .setColor(0x5865f2)
-    .setTitle("🎫 FernExcel Support")
-    .setDescription(
-      "Welcome to FernExcel Support!\n\n" +
-        "Please choose the service you need by clicking one of the buttons below.",
-    );
+    .setColor(service.color)
+    .setTitle(service.title)
+    .setDescription(service.description)
+    .setFooter({
+      text: "FERNexcel Digital",
+    });
 
-  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-    new ButtonBuilder()
-      .setCustomId("consumable")
-      .setLabel("Consumable Hours")
-      .setEmoji("🟦")
-      .setStyle(ButtonStyle.Primary),
+  const button = new ButtonBuilder()
+    .setCustomId(service.buttonId)
+    .setLabel(service.buttonLabel)
+    .setStyle(ButtonStyle.Primary);
 
-    new ButtonBuilder()
-      .setCustomId("landing")
-      .setLabel("Landing Page")
-      .setEmoji("🟩")
-      .setStyle(ButtonStyle.Success),
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(button);
 
-    new ButtonBuilder()
-      .setCustomId("website")
-      .setLabel("Website Development")
-      .setEmoji("🟪")
-      .setStyle(ButtonStyle.Secondary),
-  );
+  await interaction.reply({
+    content: "✅ Service panel created.",
+    ephemeral: true,
+  });
 
   if (
     !interaction.channel ||
     interaction.channel.type !== ChannelType.GuildText
   ) {
-    return interaction.editReply(
-      "❌ This command can only be used in a server text channel.",
-    );
+    return interaction.editReply({
+      content: "❌ This command can only be used in a server text channel.",
+    });
   }
 
   await (interaction.channel as TextChannel).send({
     embeds: [embed],
     components: [row],
   });
-
-  await interaction.editReply("✅ Ticket panel created.");
 }

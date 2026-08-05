@@ -1,37 +1,59 @@
 import "dotenv/config";
 
-import { REST, Routes, SlashCommandBuilder } from "discord.js";
-import { config } from "./config.js";
+import { REST, Routes } from "discord.js";
 
 const commands = [
-  new SlashCommandBuilder()
-    .setName("setup")
-    .setDescription("Create the support ticket panel"),
+  {
+    name: "ping",
+    description: "Replies with Pong!",
+  },
 
-  new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Check if the bot is online"),
-].map((command) => command.toJSON());
+  {
+    name: "setup",
+    description: "Create a service support panel",
+    options: [
+      {
+        name: "service",
+        description: "Select a service",
+        type: 3,
+        required: true,
+        choices: [
+          {
+            name: "Consumable Hours",
+            value: "consumable",
+          },
+          {
+            name: "Landing Page",
+            value: "landing",
+          },
+          {
+            name: "Full Website Development",
+            value: "fullweb",
+          },
+        ],
+      },
+    ],
+  },
+];
 
-const rest = new REST({ version: "10" }).setToken(config.discord.token);
+const rest = new REST().setToken(process.env.DISCORD_TOKEN!);
 
 async function deployCommands() {
   try {
-    console.log("🚀 Registering slash commands...");
+    console.log("🔄 Registering slash commands...");
 
     await rest.put(
       Routes.applicationGuildCommands(
-        config.discord.clientId,
-        config.discord.guildId,
+        process.env.CLIENT_ID!,
+        process.env.GUILD_ID!,
       ),
       {
         body: commands,
       },
     );
 
-    console.log("✅ Slash commands registered successfully!");
+    console.log("✅ Slash commands registered");
   } catch (error) {
-    console.error("❌ Failed to register commands:");
     console.error(error);
   }
 }
