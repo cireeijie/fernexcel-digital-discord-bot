@@ -1,4 +1,10 @@
-import { ButtonInteraction, ChannelType, EmbedBuilder } from "discord.js";
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonInteraction,
+  ButtonStyle,
+  ChannelType,
+} from "discord.js";
 
 export async function closeButton(interaction: ButtonInteraction) {
   const channel = interaction.channel;
@@ -10,31 +16,23 @@ export async function closeButton(interaction: ButtonInteraction) {
     });
   }
 
-  // Ensure it's a ticket channel
-  if (
-    !channel.name.startsWith("ticket-") &&
-    !channel.name.startsWith("assigned-")
-  ) {
-    return interaction.reply({
-      content: "❌ This is not a ticket channel.",
-      ephemeral: true,
-    });
-  }
+  const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+    new ButtonBuilder()
+      .setCustomId("close_confirm")
+      .setLabel("Confirm Delete")
+      .setEmoji("✅")
+      .setStyle(ButtonStyle.Danger),
 
-  const embed = new EmbedBuilder()
-    .setColor("Red")
-    .setTitle("🔒 Ticket Closed")
-    .setDescription(
-      `This ticket was closed by ${interaction.user}.\n\nThis channel will be deleted in **5 seconds**.`,
-    )
-    .setTimestamp();
+    new ButtonBuilder()
+      .setCustomId("close_cancel")
+      .setLabel("Cancel")
+      .setEmoji("❌")
+      .setStyle(ButtonStyle.Secondary),
+  );
 
-  await interaction.reply({
-    embeds: [embed],
+  return interaction.reply({
+    content:
+      "⚠️ Are you sure you want to delete this ticket?\n\nThis action cannot be undone.",
+    components: [row],
   });
-
-  // Wait 5 seconds
-  await new Promise((resolve) => setTimeout(resolve, 5000));
-
-  await channel.delete("Ticket closed");
 }

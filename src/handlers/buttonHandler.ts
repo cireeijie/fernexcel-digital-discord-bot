@@ -5,6 +5,8 @@ import { landingButton } from "../buttons/landing.js";
 import { websiteButton } from "../buttons/website.js";
 import { assignButton } from "../buttons/assign.js";
 import { closeButton } from "../buttons/close.js";
+import { closeConfirmButton } from "../buttons/closeConfirm.js";
+import { closeCancelButton } from "../buttons/closeCancel.js";
 
 export async function handleButton(interaction: ButtonInteraction) {
   switch (interaction.customId) {
@@ -22,6 +24,12 @@ export async function handleButton(interaction: ButtonInteraction) {
 
     case "close":
       return closeButton(interaction);
+
+    case "close_confirm":
+      return closeConfirmButton(interaction);
+
+    case "close_cancel":
+      return closeCancelButton(interaction);
 
     default:
       return interaction.reply({
