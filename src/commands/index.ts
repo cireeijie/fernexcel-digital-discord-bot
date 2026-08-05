@@ -1,13 +1,17 @@
 import { pingCommand } from "./ping.js";
-import { setupCommand } from "./setup.js";
+import { consumablesCommand } from "./consumables.js";
+import { landingCommand } from "./landing.js";
+import { fullwebCommand } from "./fullweb.js";
 
 import type { ChatInputCommandInteraction } from "discord.js";
 
-export type CommandHandler = (
+type CommandHandler = (
   interaction: ChatInputCommandInteraction,
 ) => Promise<unknown>;
 
 export const commands: Record<string, CommandHandler> = {
   ping: pingCommand,
-  setup: setupCommand,
+  consumables: consumablesCommand,
+  landing: landingCommand,
+  fullweb: fullwebCommand,
 };

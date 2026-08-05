@@ -5,34 +5,19 @@ import { REST, Routes } from "discord.js";
 const commands = [
   {
     name: "ping",
-    description: "Replies with Pong!",
+    description: "Check if the bot is online",
   },
-
   {
-    name: "setup",
-    description: "Create a service support panel",
-    options: [
-      {
-        name: "service",
-        description: "Select a service",
-        type: 3,
-        required: true,
-        choices: [
-          {
-            name: "Consumable Hours",
-            value: "consumable",
-          },
-          {
-            name: "Landing Page",
-            value: "landing",
-          },
-          {
-            name: "Full Website Development",
-            value: "fullweb",
-          },
-        ],
-      },
-    ],
+    name: "consumables",
+    description: "Create consumable hours support panel",
+  },
+  {
+    name: "landing",
+    description: "Create landing page support panel",
+  },
+  {
+    name: "fullweb",
+    description: "Create website development support panel",
   },
 ];
 
