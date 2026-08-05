@@ -1,11 +1,11 @@
+import { Events } from "discord.js";
 import type { Client } from "discord.js";
 
 export function readyEvent(client: Client) {
-  client.once("ready", () => {
+  client.once(Events.ClientReady, (readyClient) => {
     console.log("=================================");
-    console.log(`✅ Logged in as ${client.user?.tag}`);
-    console.log(`🆔 ${client.user?.id}`);
-    console.log("🚀 FernExcel Discord Bot is online.");
+    console.log(`✅ Bot is online as ${readyClient.user.tag}`);
+    console.log(`📡 Connected to ${readyClient.guilds.cache.size} server(s)`);
     console.log("=================================");
   });
 }
